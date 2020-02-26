@@ -111,14 +111,14 @@ def label_rows(main_ws, Partnumber_col):
     
     # loop through parts
     N = len(parts[1])
-    out = display(progress_bar(0, N), display_id=True)
+    out = display(progress_bar(0, 100), display_id=True)
     for i, p in enumerate(parts[1]):
         row_ind = parts[0].index(p) + 2
         # debug
         # print("p here is: " + p)
         # print("row_ind here is: " + str(row_ind))
-        # progress = str(round(100*i/N, 2))
-        out.update(progress_bar(i, N))
+        progress = int(round(100*i/N, 0))
+        out.update(progress_bar(progress, 100))
         # print("progress: " + progress + "% completed")
         try:
             val_set = read_val_into_set(p + ".xls")
