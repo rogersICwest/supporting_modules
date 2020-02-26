@@ -61,7 +61,7 @@ def read_val_into_set(filename):
     return vals
 
 def progress_bar(val):
-    return HTML("""<div>progress: '{val}'% completed</div>""".format(val = val))
+    return HTML("""<div>progress: {val}% completed</div>""".format(val = val))
 
 def get_header(worksheet):
     # assume first row is the header
