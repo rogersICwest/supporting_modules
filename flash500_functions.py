@@ -6,7 +6,8 @@ import openpyxl # for modifying xlsx files
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Color, PatternFill, Font, Border
 import xlrd # adding support for older xls files
-from tqdm import tqdm # progress bar
+from IPython.display import HTML, display
+import time
 
 
 # if file is the older version xls, have to convert with this function first
@@ -59,6 +60,16 @@ def read_val_into_set(filename):
     
     return vals
 
+def progress_bar(value, max=100):
+    return HTML("""
+        <progress
+            value='{value}'
+            max='{max}',
+            style='width: 100%'
+        >
+            {value}
+        </progress>
+    """.format(value=value, max=max))
 
 def get_header(worksheet):
     # assume first row is the header
@@ -100,13 +111,15 @@ def label_rows(main_ws, Partnumber_col):
     
     # loop through parts
     N = len(parts[1])
+    out = display(progress_bar(0, 100), display_id=True)
     for i, p in enumerate(parts[1]):
         row_ind = parts[0].index(p) + 2
         # debug
         # print("p here is: " + p)
         # print("row_ind here is: " + str(row_ind))
         progress = str(round(100*i/N, 2))
-        print("progress: " + progress + "% completed")
+        out.update(progress(i, 100))
+        # print("progress: " + progress + "% completed")
         try:
             val_set = read_val_into_set(p + ".xls")
         except:
